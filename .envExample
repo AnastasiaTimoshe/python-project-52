@@ -1,3 +1,4 @@
-DEBUG=False
-DATABASE_URL=postgres://username:password@hostname/database
-SECRET_KEY="Your secret key"
+SECRET_KEY="YOUR SECRET KEY"
+DEBUG="False"
+DATABASE_URL="{provider}://{user}:{password}@{host}:{port}/{db}"
+ROLLBAR_ACCESS_TOKEN="YOUR ROLLBAR ACCESS TOKEN"
