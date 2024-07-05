@@ -5,7 +5,7 @@ version:
 	poetry run django-admin version
 
 start:
-	gunicorn task_manager.wsgi --log-file -
+	gunicorn task_manager.wsgi:application
 
 dev:
 	python manage.py runserver
