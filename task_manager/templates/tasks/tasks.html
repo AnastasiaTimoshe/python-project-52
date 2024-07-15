@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% load django_bootstrap5 %}
+{% load i18n %}
+
+{% block nav %}
+{% if user.is_authenticated %}
+{% include "nav_panel.html" %}
+{% else %}
+{% include "nav.html" %}
+{% endif %}
+{% endblock %}
+{% block content %}
+
+
+  <h1 class="my-4">{% translate "Tasks" %}</h1>
+        
+  <a class="btn btn-primary mb-3" href="/tasks/create/">{% translate "Create task" %}</a>
+
+  <div class="card-body bg-light">
+    <form method="get">
+
+      {% bootstrap_form filter.form %}
+
+      <input class="btn btn-primary" type="submit" value="{% translate 'Show' %}">
+    </form>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+	<th>ID</th>
+	<th>{% translate "Name" %}</th>
+        <th>{% translate "Status" %}</th>
+	<th>{% translate "Author" %}</th>
+	<th>{% translate "Performer" %}</th>
+	<th>{% translate "Created at" %}</th>
+	<th></th>
+      </tr>
+    </thead>
+   {% for task in tasks %}
+    <tbody>
+      <tr>
+	<td>{{ task.id }}</td>
+        <td><a href="{% url 'task_read' task.id %}">{{ task.name }}</a></td>
+	<td>{{ task.status }}</td>
+	<td>{{ task.author }}</td>
+	<td>{{ task.executor }}</td>
+	<td>{{ task.created_at }}</td>
+	<td>
+	  <a href="{% url 'task_update' task.id %}">{% translate "Update" %}</a>
+	  <br>
+	  <a href="{% url 'task_delete' task.id %}">{% translate "Delete" %}</a>
+	</td>
+      </tr>
+    </tbody>
+    {% endfor %}
+  </table>
+
+{% endblock %}
