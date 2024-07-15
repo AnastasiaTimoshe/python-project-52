@@ -1,35 +1,28 @@
-from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.shortcuts import render
+from django.contrib import messages
+from django.views.generic.base import TemplateView
+from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.messages.views import SuccessMessageMixin
 
 
-class UserListView(ListView):
-    model = User
-    template_name = 'users/user_list.html'
+class HomePageView(TemplateView):
+
+    template_name = "index.html"
+
+    def get(self, request, *args, **kwargs):
+        return render(request, 'index.html')
 
 
-class UserCreateView(CreateView):
-    form_class = UserCreationForm
-    template_name = 'users/user_form.html'
-    success_url = reverse_lazy('login')
+class UserLoginView(SuccessMessageMixin, LoginView):
+
+    template_name = 'login.html'
+    success_message = _("You are logged in")
 
 
-class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = User
-    fields = ['username', 'email']
-    template_name = 'users/user_form.html'
-    success_url = reverse_lazy('user_list')
+class UserLogoutView(LogoutView):
 
-    def test_func(self):
-        return self.get_object() == self.request.user
-
-
-class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = User
-    template_name = 'users/user_confirm_delete.html'
-    success_url = reverse_lazy('user_list')
-
-    def test_func(self):
-        return self.get_object() == self.request.user
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            messages.info(request, _("You are logged out"))
+        return super().dispatch(request, *args, **kwargs)
