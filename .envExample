@@ -1,4 +1,4 @@
-SECRET_KEY="YOUR SECRET KEY"
-DEBUG="False"
-DATABASE_URL="{provider}://{user}:{password}@{host}:{port}/{db}"
-ROLLBAR_ACCESS_TOKEN="YOUR ROLLBAR ACCESS TOKEN"
+SECRET_KEY=your-secret-key
+DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1,webserver
+DATABASE_URL=postgres://user:password@localhost:5432/dbname
