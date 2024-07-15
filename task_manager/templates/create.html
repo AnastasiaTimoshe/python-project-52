@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% load django_bootstrap5 %}
+{% load i18n %}
+
+{% block nav %}
+{% if user.is_authenticated %}
+{% include "nav_panel.html" %}
+{% else %}
+{% include "nav.html" %}
+{% endif %}
+{% endblock %}
+{% block content %}
+
+
+{% if form.errors %}
+<div>
+    <ul>
+    {% for error in form.errors %}
+        <li><strong>{{ error|escape }}</strong></li>
+    {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+
+  <h1 class="my-4">
+        
+{% translate title %}
+
+      </h1>
+
+
+
+<form action="{% url target %}" method="post">
+    {% csrf_token %}
+
+    <table border="1">
+
+  {% bootstrap_form form %}
+
+    <input class="btn btn-primary" type="submit" value={% translate action %}>
+ 
+</form>
+
+
+
+{% endblock %}

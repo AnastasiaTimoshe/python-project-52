@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% load django_bootstrap5 %}
+{% load i18n %}
+
+{% block nav %}
+{% if user.is_authenticated %}
+{% include "nav_panel.html" %}
+{% else %}
+{% include "nav.html" %}
+{% endif %}
+{% endblock %}
+{% block content %}
+
+
+<div class="container wrapper flex-grow-1">
+      
+      <h1 class="my-4">
+        
+{% translate action %}
+
+      </h1>
+      
+  <form method="post">
+    {% csrf_token %}
+
+    <p>{% translate "Are you sure, you want to delete" %} {{ object }}?</p>
+
+    <input class="btn btn-danger" type="submit" value="{% translate "Yes, delete" %}">
+  </form>
+
+
+
+{% endblock %}
