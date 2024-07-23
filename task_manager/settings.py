@@ -132,7 +132,7 @@ LANGUAGES = (
 
 LOCALE_PATHS = [os.path.join(BASE_DIR, 'task_manager/locale'), ]
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Etc/UTC'
 
 USE_I18N = True
 
