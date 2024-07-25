@@ -1,0 +1,10 @@
+[
+{
+    "model": "statuses.status",
+    "pk": 1,
+    "fields": {
+        "name": "Anna",
+        "timestamp": "2024-07-23T20:11:18.858Z"
+    }
+}
+]

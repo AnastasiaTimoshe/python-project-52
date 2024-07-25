@@ -15,25 +15,25 @@ class UsersTest(TestCase):
 
     def test_user_attributes(self):
         user2 = Users.objects.get(pk="3")
-        self.assertEqual(user2.username, "emi2")
-        self.assertEqual(user2.first_name, "emi")
+        self.assertEqual(user2.username, "tim2")
+        self.assertEqual(user2.first_name, "tim")
 
     def test_user_create(self):
         url = reverse("user_create")
         user = {
-            "first_name": "Mia",
-            "last_name": "Lukovic",
-            "username": "Mia2013",
-            'password1': 'mia',
-            'password2': 'mia',
+            "first_name": "Anna",
+            "last_name": "Tim",
+            "username": "AnnaT",
+            'password1': 'tim',
+            'password2': 'tim',
         }
         response = self.client.post(url, user)
         self.assertEqual(response.status_code, 302)
         test_user = Users.objects.last()
-        assert test_user.first_name == "Mia"
+        assert test_user.first_name == "Anna"
         self.assertEqual(Users.objects.count(), 6)
-        new_user = Users.objects.get(username="Mia2013")
-        self.assertEqual(new_user.last_name, "Lukovic")
+        new_user = Users.objects.get(username="AnnaT")
+        self.assertEqual(new_user.last_name, "Tim")
 
     def test_user_update(self):
         user1 = Users.objects.get(pk="2")
@@ -42,7 +42,7 @@ class UsersTest(TestCase):
         update_user = {
             "first_name": user1.first_name,
             "last_name": user1.last_name,
-            "username": "Emi2015",
+            "username": "Tim1",
             'password1': user1.password,
             'password2': user1.password,
         }
@@ -50,7 +50,7 @@ class UsersTest(TestCase):
         updated_user = Users.objects.get(pk=user1.pk)
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse("users_list"))
-        self.assertEqual(updated_user.username, "Emi2015")
+        self.assertEqual(updated_user.username, "Tim1")
 
     def test_user_update_without_permission(self):
         user1 = Users.objects.get(pk="2")
@@ -59,14 +59,14 @@ class UsersTest(TestCase):
         update_user = {
             "first_name": user1.first_name,
             "last_name": user1.last_name,
-            "username": "Emi2015",
+            "username": "Tim1",
             'password1': user1.password,
             'password2': user1.password,
         }
         self.client.force_login(user1)
         response = self.client.get(url, update_user)
         self.assertRedirects(response, reverse("users_list"))
-        self.assertEqual(user1.username, "emi")
+        self.assertEqual(user1.username, "tim")
 
     def test_user_delete(self):
         self.assertEqual(Users.objects.count(), 5)
