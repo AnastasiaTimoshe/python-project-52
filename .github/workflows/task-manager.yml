@@ -1,4 +1,4 @@
-name: PyCI
+name: Python CI
 
 on:
   - push
@@ -9,32 +9,27 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8, 3.9]
+        python-version: [3.11]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
         # make depends on poetry
-        # - name: Start Postgresql
-        # run: sudo service postgresql restart
       - name: Install dependencies
-        run: | 
+        run: |
           pip install poetry
           make install
-#      - name: Run tests
-#        env:
-#          SECRET_KEY: secret
-#          DEBUG: True
-#        run: make test
       - name: Run linter
-        run: make lint
-#      - name: Publish code coverage
-#        uses: paambaati/codeclimate-action@v5.0.0
-#        if: github.ref_name == 'main'
-#        env:
-#          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-#        with:
-#          coverageCommand: make test-coverage
-#          debug: true
+        run: |
+          make lint
+      - name: Test & publish code coverage
+        uses: paambaati/codeclimate-action@v5.0.0
+        if: github.ref_name == 'main'
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }} 
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageCommand: make test-coverage
+          debug: true
