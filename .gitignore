@@ -24,3 +24,4 @@ htmlcov/
 erd.png
 .coverage
 env/
+*.whl
