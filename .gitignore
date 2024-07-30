@@ -25,3 +25,4 @@ erd.png
 .coverage
 env/
 *.whl
+.idea
