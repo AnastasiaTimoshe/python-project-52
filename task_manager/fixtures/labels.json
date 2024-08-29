@@ -1,18 +1,26 @@
 [
-{
-    "model": "labels.label",
-    "pk": 3,
-    "fields": {
-        "name": "Label 1",
-        "timestamp": "2024-07-25T18:43:55.050Z"
+    {
+        "model": "labels.label",
+        "pk": 3,
+        "fields": {
+            "name": "Label 1",
+            "timestamp": "2024-07-25T18:43:55.050Z"
+        }
+    },
+    {
+        "model": "labels.label",
+        "pk": 4,
+        "fields": {
+            "name": "Label 2",
+            "timestamp": "2024-07-25T18:43:59.647Z"
+        }
+    },
+    {
+        "model": "labels.label",
+        "pk": 5,
+        "fields": {
+            "name": "Label 3",
+            "timestamp": "2024-07-25T18:44:02.123Z"
+        }
     }
-},
-{
-    "model": "labels.label",
-    "pk": 4,
-    "fields": {
-        "name": "Label 2",
-        "timestamp": "2024-07-25T18:43:59.647Z"
-    }
-}
 ]

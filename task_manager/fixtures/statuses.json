@@ -3,8 +3,16 @@
     "model": "statuses.status",
     "pk": 1,
     "fields": {
-        "name": "Anna",
-        "timestamp": "2024-07-23T20:11:18.858Z"
+        "name": "Anna_Smir",
+        "timestamp": "2024-07-30T19:59:32.091Z"
+    }
+},
+{
+    "model": "statuses.status",
+    "pk": 2,
+    "fields": {
+        "name": "Masha_Iv",
+        "timestamp": "2024-07-30T20:18:43.856Z"
     }
 }
 ]
