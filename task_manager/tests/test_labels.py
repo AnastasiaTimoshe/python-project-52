@@ -9,16 +9,10 @@ class LabelsTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         call_command('loaddata', 'labels.json', 'users.json')
-        print("Фикстуры загружены")
 
     def setUp(self):
-        initial_count = Label.objects.count()
-        print(f"Начальное количество меток: {initial_count}")
-
         self.user = Users.objects.create_user(username='tester', password='password')
         self.client.login(username='tester', password='password')
-
-        super().setUp()
 
     def test_label_exist(self):
         expected_count = 3
@@ -31,6 +25,7 @@ class LabelsTest(TestCase):
         response = self.client.post(reverse('label_create'), data=new_label)
         self.assertEqual(response.status_code, 302, "Create label did not redirect as expected")
         self.assertEqual(Label.objects.count(), 4, "Label count did not increase after creation")
+        self.assertTrue(Label.objects.filter(name='New Label').exists(), "New label was not created")
 
     def test_label_delete(self):
         label_to_delete = Label.objects.create(name="To be deleted")
