@@ -25,7 +25,8 @@ class LabelsTest(TestCase):
         response = self.client.post(reverse('label_create'), data=new_label)
         self.assertEqual(response.status_code, 302, "Create label did not redirect as expected")
         self.assertEqual(Label.objects.count(), 4, "Label count did not increase after creation")
-        self.assertTrue(Label.objects.filter(name='New Label').exists(), "New label was not created")
+        self.assertTrue(Label.objects.filter(name='New Label').exists(),
+                        "New label was not created")
 
     def test_label_delete(self):
         label_to_delete = Label.objects.create(name="To be deleted")
