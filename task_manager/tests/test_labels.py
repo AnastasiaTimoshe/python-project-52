@@ -15,8 +15,8 @@ class LabelsTest(TestCase):
         initial_count = Label.objects.count()
         print(f"Начальное количество меток: {initial_count}")
 
-        self.user = Users.objects.create_user(username='testuser', password='password')
-        self.client.login(username='testuser', password='password')
+        self.user = Users.objects.create_user(username='tester', password='password')
+        self.client.login(username='tester', password='password')
 
         super().setUp()
 
@@ -33,7 +33,6 @@ class LabelsTest(TestCase):
         self.assertEqual(Label.objects.count(), 4, "Label count did not increase after creation")
 
     def test_label_delete(self):
-        # Создать метку, которую затем удалим
         label_to_delete = Label.objects.create(name="To be deleted")
 
         self.assertEqual(Label.objects.count(), 4,
