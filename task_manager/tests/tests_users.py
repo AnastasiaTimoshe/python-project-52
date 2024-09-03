@@ -96,7 +96,6 @@ class UsersTest(TestCase):
         response = self.client.post(url)
 
         self.assertRedirects(response, reverse('users_list'))
-
         self.assertEqual(Users.objects.count(), 5)
 
         messages = list(response.wsgi_request._messages)
