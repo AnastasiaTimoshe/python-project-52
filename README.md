@@ -6,7 +6,6 @@
 
 #[![Test Coverage]()]()
 
-
 # Task manager
 
 Task Manager is a program that makes project management easier. But at the same time, you can use such software not only for project work, but also for everyday tasks. The task manager helps to check the effectiveness of employees, as well as set tasks and monitor their implementation.
@@ -15,7 +14,6 @@ This project was build using these tools:
 1. python
 2. poetry
 3. flake8
-
 
 It will be comfortable to use this application with these commands:
 - to install: `pip install --user `
