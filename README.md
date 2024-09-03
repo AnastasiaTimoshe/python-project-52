@@ -17,6 +17,7 @@ This project was build using these tools:
 2. poetry
 3. flake8
 
+
 It will be comfortable to use this application with these commands:
 - to install: `pip install --user `
 - to assemble package : `make build`
@@ -24,6 +25,9 @@ It will be comfortable to use this application with these commands:
 - to run app : `make start`
 - to run pytest : `make test`
 - to run linter : `make lint`
+
+
+
 
 
 To use the app properly you'll need to provide it with $DATABASE_URL (variable for connecting to the database) and $SECRET_KEY (your secret key formed Django) vars.
