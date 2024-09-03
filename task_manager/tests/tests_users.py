@@ -95,4 +95,5 @@ class UsersTest(TestCase):
         self.assertEqual(Users.objects.count(), 5)
 
         messages = list(response.wsgi_request._messages)
-        self.assertTrue(any("У вас нет прав для удаления другого пользователя." in str(m) for m in messages))
+        expected_error_message = "У вас нет прав для удаления другого пользователя."
+        self.assertTrue(any(expected_error_message in str(m) for m in messages))
