@@ -87,6 +87,12 @@ class UsersTest(TestCase):
         user2 = Users.objects.get(pk=2)
         self.client.force_login(user2)
         url = reverse("user_delete", args=[user4.pk])
-        response = self.client.get(url)
+
+        response = self.client.post(url)
+
         self.assertRedirects(response, reverse('users_list'))
+
         self.assertEqual(Users.objects.count(), 5)
+
+        messages = list(response.wsgi_request._messages)
+        self.assertTrue(any("У вас нет прав для удаления другого пользователя." in str(m) for m in messages))
