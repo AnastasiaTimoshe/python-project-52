@@ -8,7 +8,11 @@
 
 # Task manager
 
+
+
 Task Manager is a program that makes project management easier. But at the same time, you can use such software not only for project work, but also for everyday tasks. The task manager helps to check the effectiveness of employees, as well as set tasks and monitor their implementation.
+
+
 
 This project was build using these tools:
 1. python
