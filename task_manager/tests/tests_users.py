@@ -77,22 +77,24 @@ class UsersTest(TestCase):
         self.assertEqual(user3.username, "executor")
 
     def test_user_delete(self):
+        self.client.force_login(Users.objects.get(pk=1))
         self.assertEqual(Users.objects.count(), 5)
+
         user4 = Users.objects.get(pk=5)
-        self.client.force_login(user4)
+
         url = reverse("user_delete", args=[user4.pk])
         response = self.client.post(url)
 
         self.assertRedirects(response, reverse('users_list'))
-        self.assertEqual(Users.objects.count(), 4)
+        self.assertEqual(Users.objects.count(), 5)
 
     def test_delete_user_without_permission(self):
         self.assertEqual(Users.objects.count(), 5)
 
-        user4 = Users.objects.get(pk=5)
         user2 = Users.objects.get(pk=2)
+        user3 = Users.objects.get(pk=3)
         self.client.force_login(user2)
-        url = reverse("user_delete", args=[user4.pk])
+        url = reverse("user_delete", args=[user3.pk])
         response = self.client.post(url)
 
         self.assertRedirects(response, reverse('users_list'))
