@@ -22,7 +22,7 @@ class UsersTest(TestCase):
         url = reverse("user_create")
         user = {
             "first_name": "Mia",
-            "last_name": "Lukovic",
+            "last_name": "Petrov",
             "username": "Mia2013",
             'password1': 'mia',
             'password2': 'mia',
@@ -33,7 +33,7 @@ class UsersTest(TestCase):
         assert test_user.first_name == "Mia"
         self.assertEqual(Users.objects.count(), 6)
         new_user = Users.objects.get(username="Mia2013")
-        self.assertEqual(new_user.last_name, "Lukovic")
+        self.assertEqual(new_user.last_name, "Petrov")
 
     def test_user_update(self):
         user2 = Users.objects.get(pk=2)
@@ -83,9 +83,12 @@ class UsersTest(TestCase):
 
     def test_delete_user_without_permission(self):
         self.assertEqual(Users.objects.count(), 5)
+
         user4 = Users.objects.get(pk=5)
         user2 = Users.objects.get(pk=2)
+
         self.client.force_login(user2)
+
         url = reverse("user_delete", args=[user4.pk])
 
         response = self.client.post(url)
@@ -96,4 +99,5 @@ class UsersTest(TestCase):
 
         messages = list(response.wsgi_request._messages)
         expected_error_message = "У вас нет прав для удаления другого пользователя."
-        self.assertTrue(any(expected_error_message in str(m) for m in messages))
+        self.assertTrue(any(expected_error_message in str(m) for m in messages),
+                        "Сообщение об ошибке не найдено")
