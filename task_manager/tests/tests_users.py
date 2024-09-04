@@ -1,6 +1,8 @@
 from django.test import TestCase, Client
 from task_manager.users.models import Users
 from django.urls import reverse
+from django.contrib.messages import get_messages
+
 
 class UsersTest(TestCase):
 
@@ -29,7 +31,6 @@ class UsersTest(TestCase):
         response = self.client.post(url, user_data)
         self.assertEqual(response.status_code, 302)
 
-        # Проверяем, что новый пользователь создан
         self.assertEqual(Users.objects.count(), 6)
         test_user = Users.objects.last()
         self.assertEqual(test_user.first_name, "Mia")
@@ -100,15 +101,7 @@ class UsersTest(TestCase):
         self.assertRedirects(response, reverse('users_list'))
         self.assertEqual(Users.objects.count(), 5)
 
-        # Отладка сообщений
-        from django.contrib.messages import get_messages
         messages = list(get_messages(response.wsgi_request))
-        print("Messages:", [str(message) for message in messages])  # Выводим сообщения для отладки
-        expected_error_message = "You do not have the rights to delete another user."
-
-        # self.assertTrue(
-        #     any(expected_error_message in str(message) for message in messages),
-        #     "Error message not found"
-        # )
-
-
+        self.assertTrue(
+            any(str(message) == "У вас нет прав для удаления другого пользователя."
+                for message in messages))
