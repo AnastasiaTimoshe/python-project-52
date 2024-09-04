@@ -5,7 +5,7 @@
     "fields": {
         "password": "pbkdf2_sha256$720000$mgg8RJPU7AnXqZ03RgP1C9$vmMSaojJfgasa8Ds9VCoZ9n++Jpv3niyGW78Vcscn0s=",
         "last_login": "2024-07-23T20:11:05.233Z",
-        "is_superuser": true,
+        "is_superuser": false,
         "username": "Anna_Ivan",
         "first_name": "Anna",
         "last_name": "Ivanova",
