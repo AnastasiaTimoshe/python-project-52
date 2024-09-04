@@ -1,4 +1,3 @@
-from django.contrib.messages import get_messages
 from django.test import TestCase, Client
 from task_manager.users.models import Users
 from django.urls import reverse
