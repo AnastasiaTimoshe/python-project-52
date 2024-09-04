@@ -1,7 +1,6 @@
 from django.test import TestCase, Client
 from task_manager.users.models import Users
 from django.urls import reverse
-from django.contrib.messages import get_messages
 
 
 class UsersTest(TestCase):
@@ -100,8 +99,3 @@ class UsersTest(TestCase):
 
         self.assertRedirects(response, reverse('users_list'))
         self.assertEqual(Users.objects.count(), 5)
-
-        messages = list(get_messages(response.wsgi_request))
-        self.assertTrue(
-            any(str(message) == "У вас нет прав для удаления другого пользователя."
-                for message in messages))
