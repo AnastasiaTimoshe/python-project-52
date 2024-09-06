@@ -20,3 +20,7 @@ test:
 test-coverage:
 	poetry run coverage run ./manage.py test
 	poetry run coverage xml
+
+PORT ?= 8000
+dev:
+	poetry run python manage.py runserver
