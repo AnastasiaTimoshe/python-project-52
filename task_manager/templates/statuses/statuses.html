@@ -3,15 +3,7 @@
 {% load django_bootstrap5 %}
 {% load i18n %}
 
-{% block nav %}
-{% if user.is_authenticated %}
-{% include "nav_panel.html" %}
-{% else %}
-{% include "nav.html" %}
-{% endif %}
-{% endblock %}
 {% block content %}
-
 
   <h1 class="my-4">{% translate "Statuses" %}</h1>
         

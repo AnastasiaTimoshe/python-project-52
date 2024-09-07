@@ -7,36 +7,31 @@ from django.shortcuts import redirect
 from django_filters.views import FilterView
 from django.views.generic.detail import DetailView
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from task_manager.users.my_mixin import MyLoginRequiredMixin
 
 
 class IndexView(FilterView):
-
     model = Task
     template_name = 'tasks/tasks.html'
     context_object_name = 'tasks'
     filterset_class = TaskFilter
 
 
-class TaskFormCreateView(SuccessMessageMixin, CreateView):
-
+class TaskFormCreateView(MyLoginRequiredMixin, SuccessMessageMixin, CreateView):
     form_class = TaskForm
     template_name = 'create.html'
     success_url = reverse_lazy('tasks')
     success_message = _('Task successfully created')
-    extra_context = {'title': _('Create task'),
-                     'target': 'task_create',
-                     'action': _('Create')}
+    extra_context = {'title': _('Create task'), 'target': 'task_create', 'action': _('Create')}
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
 
-class TaskFormUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
-
+class TaskFormUpdateView(MyLoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Task
     form_class = TaskForm
     template_name = 'update.html'
@@ -49,7 +44,7 @@ class TaskFormUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         return super().form_valid(form)
 
 
-class TaskFormDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+class TaskFormDeleteView(MyLoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Task
     template_name = 'delete.html'
     success_url = reverse_lazy('tasks')

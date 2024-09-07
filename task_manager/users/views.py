@@ -40,6 +40,11 @@ class UserFormUpdateView(MyLoginRequiredMixin,
     permission_message = _("You do not have the rights to change another user.")
     extra_context = {'action': _('Edit user')}
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['target'] = 'user_update'
+        return context
+
 
 class UserFormDeleteView(MyLoginRequiredMixin,
                          MyCheckPermissionMixin,

@@ -5,9 +5,10 @@
 {% block content %}
     <h1 class="my-4">{% translate title %}</h1>
     
-    <form action="{% url target %}" method="post">
+    <form action="{% url target object.pk %}" method="post">
         {% csrf_token %}
         {% bootstrap_form form %}
         <input class="btn btn-primary" type="submit" value="{% translate action %}">
     </form>
+
 {% endblock %}
