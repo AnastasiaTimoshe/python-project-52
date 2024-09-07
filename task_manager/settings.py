@@ -163,6 +163,9 @@ LOGOUT_REDIRECT_URL = 'start_page'
 AUTH_USER_MODEL = 'users.Users'
 
 CSRF_TRUSTED_ORIGINS = ['https://localhost:8000']
+CSRF_COOKIE_SECURE = False
+CSRF_USE_SESSIONS = False
+
 
 ROLLBAR = {
     'access_token': os.getenv('ROLLBAR'),
