@@ -1,22 +1,23 @@
-from .models import Users
-from .forms import UserForm, UpdateUserForm
-from .my_mixin import MyLoginRequiredMixin, MyCheckPermissionMixin
+from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import Q
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib import messages
+from django.shortcuts import redirect
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from .models import Users
+from .forms import UserForm, UpdateUserForm
+from task_manager.tasks.models import Task
 
 
 class IndexView(ListView):
-
     model = Users
     template_name = 'users/users.html'
     context_object_name = 'users'
 
 
 class UserFormCreateView(SuccessMessageMixin, CreateView):
-
     model = Users
     form_class = UserForm
     template_name = 'create.html'
@@ -27,11 +28,7 @@ class UserFormCreateView(SuccessMessageMixin, CreateView):
                      'action': _('Register')}
 
 
-class UserFormUpdateView(MyLoginRequiredMixin,
-                         MyCheckPermissionMixin,
-                         SuccessMessageMixin,
-                         UpdateView):
-
+class UserFormUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     model = Users
     form_class = UpdateUserForm
     template_name = 'update.html'
@@ -40,17 +37,21 @@ class UserFormUpdateView(MyLoginRequiredMixin,
     permission_message = _("You do not have the rights to change another user.")
     extra_context = {'action': _('Edit user')}
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['target'] = 'user_update'
-    #     return context
+    def form_valid(self, form):
+        if form.cleaned_data.get('password1'):
+            self.object.set_password(form.cleaned_data['password1'])
+            self.object.save()
+        return super().form_valid(form)
+
+    def test_func(self):
+        return self.get_object() == self.request.user
+
+    def handle_no_permission(self):
+        messages.error(self.request, self.permission_message)
+        return redirect('users_list')
 
 
-class UserFormDeleteView(MyLoginRequiredMixin,
-                         MyCheckPermissionMixin,
-                         SuccessMessageMixin,
-                         DeleteView):
-
+class UserFormDeleteView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, DeleteView):
     model = Users
     template_name = 'delete.html'
     success_url = reverse_lazy('users_list')
@@ -63,3 +64,25 @@ class UserFormDeleteView(MyLoginRequiredMixin,
         context = super().get_context_data(**kwargs)
         context['object'] = f'{self.get_object().first_name} {self.get_object().last_name}'
         return context
+
+    def test_func(self):
+        return self.get_object() == self.request.user
+
+    def handle_no_permission(self):
+        messages.error(self.request, self.permission_message)
+        return redirect('users_list')
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        user_in_use = Task.objects.filter(
+            Q(executor=self.object) | Q(author=self.object)
+        ).exists()
+
+        if user_in_use:
+            messages.error(
+                self.request,
+                _("Cannot delete user because they are in use")
+            )
+            return redirect(self.success_url)
+
+        return super().post(request, *args, **kwargs)
