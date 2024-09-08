@@ -3,6 +3,7 @@ from django.core.management import call_command
 from task_manager.labels.models import Label
 from django.urls import reverse
 from task_manager.users.models import Users
+from django.utils.translation import gettext as _
 
 
 class LabelsTest(TestCase):
@@ -37,5 +38,10 @@ class LabelsTest(TestCase):
         response = self.client.post(reverse('label_delete', args=[label_to_delete.pk]))
 
         self.assertEqual(response.status_code, 302, "Delete did not redirect as expected")
+
+        success_message = _("Label successfully deleted")
+        messages = list(response.wsgi_request._messages)
+        self.assertTrue(any(success_message in str(message) for message in messages),
+                        f"Expected success message '{success_message}' not found")
 
         self.assertEqual(Label.objects.count(), 3, "Label count did not decrease after deletion")
