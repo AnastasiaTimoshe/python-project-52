@@ -1,11 +1,12 @@
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
+from django.db.models.deletion import ProtectedError
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.contrib import messages
-from django.shortcuts import redirect
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Users
 from .forms import UserForm, UpdateUserForm
 from task_manager.tasks.models import Task
@@ -23,9 +24,12 @@ class UserFormCreateView(SuccessMessageMixin, CreateView):
     template_name = 'create.html'
     success_url = reverse_lazy('login')
     success_message = _("The user has been successfully registered")
-    extra_context = {'title': _('Registration'),
-                     'target': 'user_create',
-                     'action': _('Register')}
+
+    extra_context = {
+        'title': _('Registration'),
+        'target': 'user_create',
+        'action': _('Register')
+    }
 
 
 class UserFormUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
@@ -35,7 +39,15 @@ class UserFormUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessage
     success_url = reverse_lazy('users_list')
     success_message = _("The user has been successfully edited")
     permission_message = _("You do not have the rights to change another user.")
+    login_message = _("You are not logged in! Please log in.")
+
     extra_context = {'action': _('Edit user')}
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            messages.error(request, self.login_message)
+            return redirect(reverse_lazy('login'))
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         if form.cleaned_data.get('password1'):
@@ -58,7 +70,14 @@ class UserFormDeleteView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessage
     success_message = _("The user has been successfully deleted")
     login_message = _("You are not logged in! Please log in.")
     permission_message = _("You do not have the rights to delete another user.")
+
     extra_context = {'action': _('Delete user')}
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            messages.error(request, self.login_message)
+            return redirect(reverse_lazy('login'))
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -85,4 +104,11 @@ class UserFormDeleteView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessage
             )
             return redirect(self.success_url)
 
-        return super().post(request, *args, **kwargs)
+        try:
+            return super().post(request, *args, **kwargs)
+        except ProtectedError:
+            messages.error(
+                self.request,
+                _("It is not possible to delete a user because it is being used")
+            )
+            return redirect(self.success_url)
