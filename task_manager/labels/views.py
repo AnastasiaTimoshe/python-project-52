@@ -39,7 +39,7 @@ class LabelFormDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Label
     template_name = 'delete.html'
     success_url = reverse_lazy('labels')
-    success_message = _('Label successfully deleted')
+    success_message = _('Tag successfully deleted')
     extra_context = {'action': _('Delete label')}
 
     def get_context_data(self, **kwargs):

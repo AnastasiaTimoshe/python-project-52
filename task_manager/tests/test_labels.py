@@ -39,7 +39,7 @@ class LabelsTest(TestCase):
 
         self.assertEqual(response.status_code, 302, "Delete did not redirect as expected")
 
-        success_message = _("Label successfully deleted")
+        success_message = _("Tag successfully deleted")
         messages = list(response.wsgi_request._messages)
         self.assertTrue(any(success_message in str(message) for message in messages),
                         f"Expected success message '{success_message}' not found")
