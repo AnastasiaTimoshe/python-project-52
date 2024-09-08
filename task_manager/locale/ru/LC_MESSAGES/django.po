@@ -280,7 +280,7 @@ msgstr "Пользователь успешно удален"
 
 #: users/views.py:54
 msgid "You do not have the rights to delete another user."
-msgstr "У вас нет прав для удаления другого пользователя."
+msgstr "У вас нет прав для изменения другого пользователя."
 
 #: users/views.py:55
 msgid "Delete user"
