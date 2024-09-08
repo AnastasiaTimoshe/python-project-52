@@ -1,10 +1,9 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/AnastasiaTimoshe/python-project-52/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/AnastasiaTimoshe/python-project-52/actions)
-
 [![Maintainability](https://api.codeclimate.com/v1/badges/2d5afcbab4241f045a97/maintainability)](https://codeclimate.com/github/AnastasiaTimoshe/python-project-52/maintainability)
-
 [![Test Coverage](https://api.codeclimate.com/v1/badges/2d5afcbab4241f045a97/test_coverage)](https://codeclimate.com/github/AnastasiaTimoshe/python-project-52/test_coverage)
 
+### Link 
 https://python-project-52-ldow.onrender.com
 
 # Task manager
@@ -22,7 +21,3 @@ Before installing the application, prepare your environment variables:
 After cloning from GitHub, run the commands:
 + *make build*
 + *make start*
-
-
-
-
