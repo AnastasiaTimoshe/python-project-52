@@ -11,14 +11,12 @@ from django.contrib.messages.views import SuccessMessageMixin
 
 
 class IndexView(ListView):
-
     model = Label
     template_name = 'labels/labels.html'
     context_object_name = 'labels'
 
 
 class LabelFormCreateView(SuccessMessageMixin, CreateView):
-
     form_class = LabelForm
     template_name = 'create.html'
     success_url = reverse_lazy('labels')
@@ -28,10 +26,7 @@ class LabelFormCreateView(SuccessMessageMixin, CreateView):
                      'action': _('Create')}
 
 
-class LabelFormUpdateView(LoginRequiredMixin,
-                          SuccessMessageMixin,
-                          UpdateView):
-
+class LabelFormUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Label
     form_class = LabelForm
     template_name = 'update.html'
@@ -58,4 +53,6 @@ class LabelFormDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
             messages.warning(request, _("Cannot delete label because it is in use"))
             return redirect(reverse_lazy('labels'))
         else:
-            return super().post(request, *args, **kwargs)
+            response = super().post(request, *args, **kwargs)
+            messages.success(self.request, self.success_message)
+            return response
