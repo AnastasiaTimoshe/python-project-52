@@ -145,7 +145,7 @@ msgid "Only the author of a task can delete it"
 msgstr "Задачу может удалить только ее автор"
 
 #: templates/delete.html:27
-msgid "Are you sure, you want to delete"
+msgid "Are you sure you want to delete"
 msgstr "Вы уверены, что хотите удалить"
 
 #: templates/delete.html:29
